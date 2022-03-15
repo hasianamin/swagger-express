@@ -53,7 +53,7 @@ exports.login = (req, res) => {
         });
         const result = {
           ...data.dataValues,
-          token,
+          accessToken: `Bearer ${token}`,
         };
         res.send(result);
       } else {

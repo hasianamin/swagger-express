@@ -25,9 +25,9 @@ exports.create = (req, res) => {
     imagePath = image ? path + '/' + image[0].filename : null;
     // Create a Event
     const event = {
-      eventName: 'req.body.eventName',
-      date: '2020-01-29 10:42:57.121+07',
-      location: 'req.body.location',
+      eventName: req.body.eventName,
+      date: req.body.date,
+      location: req.body.location,
       image: imagePath,
     };
     // Save Event in the database
