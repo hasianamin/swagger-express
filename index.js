@@ -13,7 +13,10 @@ app.use(express.json());
 
 const db = require('./app/models');
 
-db.sequelize.sync();
+// db.sequelize.sync();
+db.sequelize.sync({ force: true }).then(() => {
+  console.log('Drop and re-sync db.');
+});
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -22,6 +25,7 @@ app.get('/', (req, res) => {
 });
 
 require('./app/routes/event.routes')(app);
+require('./app/routes/user.routes')(app);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 

@@ -1,32 +1,47 @@
 const db = require('../models');
+const { uploader } = require('./../helpers/uploader');
 
 const Event = db.event;
 const { Op } = db.Sequelize;
 
 exports.create = (req, res) => {
   // Validate request
+  const path = '/events';
+  let imagePath;
+  const upload = uploader(path, 'EVT').fields([{ name: 'image' }]);
   if (!req.body.eventName) {
     res.status(400).send({
       message: 'Event name can not be empty!',
     });
     return;
   }
-  // Create a Event
-  const tutorial = {
-    eventName: req.body.eventName,
-    date: req.body.date,
-    location: req.body.location,
-  };
-  // Save Event in the database
-  Event.create(tutorial)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || 'Some error occurred while creating the event.',
+  upload(req, res, (err) => {
+    if (err)
+      return res.status(500).json({
+        message: 'upload picture failed',
+        error: err.message,
       });
-    });
+    const { image } = req.files;
+    imagePath = image ? path + '/' + image[0].filename : null;
+    // Create a Event
+    const event = {
+      eventName: 'req.body.eventName',
+      date: '2020-01-29 10:42:57.121+07',
+      location: 'req.body.location',
+      image: imagePath,
+    };
+    // Save Event in the database
+    Event.create(event)
+      .then((data) => {
+        res.send(data);
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message:
+            err.message || 'Some error occurred while creating the event.',
+        });
+      });
+  });
 };
 
 exports.findAll = (req, res) => {
