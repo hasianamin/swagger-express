@@ -1,0 +1,178 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Development Test",
+    "description": "Developed using ExpressJs"
+  },
+  "host": "localhost:4000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Events",
+      "description": "API for events in the system"
+    }
+  ],
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/events": {
+      "get": {
+        "tags": ["Events"],
+        "summary": "Get all event in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Events"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "get event with limit",
+            "schema": {
+              "$ref": "#/definitions/Events"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "get event with offset",
+            "schema": {
+              "$ref": "#/definitions/Events"
+            }
+          }
+        ]
+      },
+      "post": {
+        "tags": ["Events"],
+        "description": "Create new event in system",
+        "parameters": [
+          {
+            "name": "event",
+            "in": "body",
+            "description": "event that we want to create",
+            "schema": {
+              "$ref": "#/definitions/Event"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "New event is created",
+            "schema": {
+              "$ref": "#/definitions/Event"
+            }
+          }
+        }
+      }
+    },
+    "/events/{id}": {
+      "get": {
+        "tags": ["Events"],
+        "summary": "Get event by id in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Event"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "get event with id",
+            "schema": {
+              "$ref": "#/definitions/Event"
+            }
+          }
+        ]
+      },
+      "put": {
+        "summary": "Update event with given ID",
+        "tags": ["Events"],
+        "parameters": [
+          {
+            "name": "event",
+            "in": "body",
+            "description": "event with new values of properties",
+            "schema": {
+              "$ref": "#/definitions/Event"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "given id",
+            "schema": {
+              "$ref": "#/definitions/Event"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "event is updated",
+            "schema": {
+              "$ref": "#/definitions/Event"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "delete event with given ID",
+        "tags": ["Events"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "given id",
+            "schema": {
+              "$ref": "#/definitions/Event"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "event is deleted",
+            "schema": {
+              "$ref": "#/definitions/Event"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Event": {
+      "required": ["eventName", "_id"],
+      "properties": {
+        "_id": {
+          "type": "integer",
+          "uniqueItems": true
+        },
+        "eventName": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        }
+      }
+    },
+    "Events": {
+      "type": "array",
+      "$ref": "#/definitions/Event"
+    }
+  }
+}
