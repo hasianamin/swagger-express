@@ -1,5 +1,4 @@
 {
-  "swagger": "2.0",
   "info": {
     "version": "1.0.0",
     "title": "Development Test",
@@ -11,11 +10,26 @@
     {
       "name": "Events",
       "description": "API for events in the system"
+    },
+    {
+      "name": "User",
+      "description": "API for users in the system"
     }
   ],
   "schemes": ["http"],
   "consumes": ["application/json"],
   "produces": ["application/json"],
+  "swagger": "2.0.0",
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "description": "enter JWT bearer token",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
   "paths": {
     "/events": {
       "get": {
@@ -149,6 +163,53 @@
           }
         }
       }
+    },
+    "/user": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get user in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "get user",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ]
+      },
+      "post": {
+        "tags": ["User"],
+        "description": "Create new user in system",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "user that we want to create",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "New user is created",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -166,6 +227,20 @@
           "type": "string"
         },
         "date": {
+          "type": "string"
+        }
+      }
+    },
+    "User": {
+      "properties": {
+        "_id": {
+          "type": "integer",
+          "uniqueItems": true
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
           "type": "string"
         }
       }

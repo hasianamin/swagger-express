@@ -14,6 +14,7 @@ const encrypt = (passwordParam) => {
 
 exports.register = (req, res) => {
   // Validate request
+  console.log(req);
   if (!req.body.username) {
     res.status(400).send({
       message: 'User name can not be empty!',
