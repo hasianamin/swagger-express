@@ -26,6 +26,8 @@ app.get('/', (req, res) => {
 
 require('./app/routes/event.routes')(app);
 require('./app/routes/user.routes')(app);
+require('./app/routes/company.routes')(app);
+require('./app/routes/product.routes')(app);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
