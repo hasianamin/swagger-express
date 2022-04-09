@@ -12,6 +12,7 @@ const corsOptions = {
 
 app.use(express.json());
 app.use(bodyParser.json());
+require('dotenv').config();
 app.use(cors(corsOptions));
 
 const db = require('./app/models');
