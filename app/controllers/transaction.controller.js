@@ -41,3 +41,14 @@ exports.create = async (req, res) => {
     }
   });
 };
+
+exports.print = async (req, res) => {
+  const result = Transaction.findAll({
+    include: [
+      {
+        model: Product,
+      },
+    ],
+  });
+  res.send({ data: result });
+};

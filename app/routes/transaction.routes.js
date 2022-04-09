@@ -3,5 +3,6 @@ module.exports = (app) => {
   const router = require('express').Router();
 
   router.post('/', transaction.create);
+  router.get('/print', transaction.print);
   app.use('/transaction', router);
 };
