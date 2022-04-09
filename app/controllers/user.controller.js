@@ -39,6 +39,8 @@ exports.register = (req, res) => {
 
 exports.login = (req, res) => {
   const { username, password } = req.body;
+  console.log('req.body');
+  console.log(req.body);
   User.findOne({
     where: {
       username,

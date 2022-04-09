@@ -2,14 +2,17 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
+app.use(express.static('public'));
+
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 const corsOptions = {
-  origin: 'http://localhost:4001',
+  origin: 'http://localhost:3000',
 };
-app.use(cors(corsOptions));
 
 app.use(express.json());
+app.use(bodyParser.json());
+app.use(cors(corsOptions));
 
 const db = require('./app/models');
 
