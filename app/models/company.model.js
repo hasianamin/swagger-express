@@ -7,8 +7,8 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
     },
   });
-  Company.associate = (models) => {
-    Company.hasMany(models.transaction, { foreignKey: 'companyId' });
-  };
+  // Company.associate = (models) => {
+  //   Company.hasMany(models.transaction, { foreignKey: 'companyId' });
+  // };
   return Company;
 };

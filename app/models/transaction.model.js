@@ -12,7 +12,7 @@ module.exports = (sequelize, Sequelize) => {
   });
   Transaction.associate = (models) => {
     Transaction.belongsTo(models.company, { foreignKey: 'companyId' });
-    Transaction.belongsTo(models.Product, { foreignKey: 'productId' });
+    Transaction.belongsTo(models.product, { foreignKey: 'productId' });
   };
   return Transaction;
 };
