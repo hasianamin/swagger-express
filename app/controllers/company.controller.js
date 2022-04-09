@@ -27,3 +27,14 @@ exports.create = (req, res) => {
       });
     });
 };
+
+exports.findAll = async (req, res) => {
+  try {
+    const data = await Company.findAll();
+    res.send({ data });
+  } catch (error) {
+    res.status(500).send({
+      message: err.message || 'Some error occurred while creating the event.',
+    });
+  }
+};

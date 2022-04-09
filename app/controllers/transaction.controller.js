@@ -107,3 +107,32 @@ exports.print = async (req, res) => {
     res.status('500').send({ message: error.message });
   }
 };
+
+exports.findAll = async (req, res) => {
+  try {
+    const result = await Transaction.findAll({
+      attributes: {
+        include: [
+          [db.sequelize.col('product.name'), 'productName'],
+          [db.sequelize.col('company.name'), 'companyName'],
+          [db.sequelize.col('product.price'), 'productPrice'],
+          [db.sequelize.literal('amount * product.price'), 'totalPrice'],
+        ],
+        exclude: ['productId', 'companyId'],
+      },
+      include: [
+        {
+          model: Product,
+          attributes: [],
+        },
+        {
+          model: Company,
+          attributes: [],
+        },
+      ],
+    });
+    res.send({ data: result });
+  } catch (error) {
+    res.status('500').send({ message: error.message });
+  }
+};
