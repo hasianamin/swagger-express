@@ -7,5 +7,8 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
     },
   });
+  User.associate = (models) => {
+    User.hasMany(models.cart, { foreignKey: 'userId' });
+  };
   return User;
 };

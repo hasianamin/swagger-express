@@ -34,6 +34,7 @@ require('./app/routes/company.routes')(app);
 require('./app/routes/product.routes')(app);
 require('./app/routes/transaction.routes')(app);
 require('./app/routes/logical.routes')(app);
+require('./app/routes/cart.routes')(app);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
