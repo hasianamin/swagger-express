@@ -9,6 +9,9 @@ module.exports = (sequelize, Sequelize) => {
     amount: {
       type: Sequelize.INTEGER,
     },
+    status: {
+      type: Sequelize.STRING,
+    },
   });
   Transaction.associate = (models) => {
     Transaction.belongsTo(models.company, { foreignKey: 'companyId' });

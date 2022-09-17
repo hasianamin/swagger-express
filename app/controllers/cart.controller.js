@@ -29,10 +29,37 @@ exports.create = (req, res) => {
     });
 };
 
+exports.update = (req, res) => {
+  const { cartId } = req.params;
+  // Validate request
+  if (!req.body.userId || !req.body.productId) {
+    res.status(400).send({
+      message: 'data can not be empty!',
+    });
+    return;
+  }
+
+  const newData = {
+    amount: req.body.amount,
+  };
+
+  Cart.update(newData, { where: { id: cartId } })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || 'Some error occurred while creating the event.',
+      });
+    });
+};
+
 exports.findAll = async (req, res) => {
   try {
+    const { userId } = req.query;
     const data = await Cart.findAll({
       include: ['product', 'user'],
+      where: { userId },
     });
     res.send({ data });
   } catch (error) {

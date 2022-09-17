@@ -1,5 +1,8 @@
 const db = require('../models');
 const utils = require('../helpers/utils');
+const schedule = require('node-schedule');
+const moment = require('moment');
+
 const { downloadResource } = utils;
 
 const Transaction = db.transaction;
@@ -20,13 +23,39 @@ exports.create = async (req, res) => {
     companyId: req.body.companyId,
     productId: req.body.productId,
     amount: req.body.amount,
+    status: 'waiting-for-payment',
   };
   db.sequelize.transaction(async (t) => {
     try {
-      await Transaction.create(newData, { transaction: t });
+      const result = await Transaction.create(newData, { transaction: t });
+      const dueDate = moment(result.dataValues.createdAt).add(1, 'minutes');
+
       const existingProduct = await Product.findOne({
         where: { id: req.body.productId },
       });
+
+      schedule.scheduleJob(new Date(dueDate), async () => {
+        const checkStatus = await Transaction.findOne({
+          where: { id: result.dataValues.id, status: 'waiting-for-payment' },
+        });
+        if (checkStatus.dataValues.id) {
+          await Transaction.update(
+            { status: 'canceled' },
+            { where: { id: result.dataValues.id } },
+          );
+          const updateProduct = await Product.findOne({
+            where: { id: req.body.productId },
+          });
+          await Product.update(
+            {
+              quantity: updateProduct.dataValues.quantity + req.body.amount,
+            },
+            { where: { id: req.body.productId } },
+          );
+          console.log('sukses');
+        }
+      });
+
       await Product.update(
         {
           quantity: existingProduct.dataValues.quantity - req.body.amount,
@@ -39,7 +68,8 @@ exports.create = async (req, res) => {
       res.send(existingProduct);
     } catch (error) {
       res.status(500).send({
-        message: err.message || 'Some error occurred while creating the event.',
+        message:
+          error.message || 'Some error occurred while creating the event.',
       });
     }
   });
@@ -132,6 +162,20 @@ exports.findAll = async (req, res) => {
       ],
     });
     res.send({ data: result });
+  } catch (error) {
+    res.status('500').send({ message: error.message });
+  }
+};
+
+exports.createScheduler = async (req, res) => {
+  try {
+    const date = new Date(2022, 8, 17, 8, 31, 0);
+    console.log(date);
+
+    const job = schedule.scheduleJob(date, function () {
+      console.log('The world is going to end today.');
+    });
+    res.send({ data: job });
   } catch (error) {
     res.status('500').send({ message: error.message });
   }
